@@ -1,0 +1,2 @@
+jekyll --no-auto ./ ./_site/
+scp ./_site/* root@asubbotin.ru:/var/www/blog
