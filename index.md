@@ -9,5 +9,3 @@ layout: page
   {{ post.content}}
   </div>
 {% endfor %}
-
-
