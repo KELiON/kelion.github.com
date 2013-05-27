@@ -166,3 +166,30 @@ body {
 .icon-github:before { content: '\f300'; } /* '' */
 .icon-twitter:before { content: '\f309'; } /* '' */
 .icon-vkontakte:before { content: '\f354'; } /* '' */
+
+#about {
+  font-size: 1.5em;
+  line-height: 150%;
+}
+
+#about-social {
+  margin-top: 30px;
+  list-style: none;
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+#about-social li {
+  line-height: 200%;
+}
+
+#about-social a {
+  border-bottom: none;
+}
+
+#about-social span {
+  border-bottom: 1px solid rgba(0, 96, 192, 0.33);
+}
+#about-social i {
+  width: 25px;
+}
