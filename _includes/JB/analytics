@@ -1,4 +1,4 @@
-{% if site.safe && site.JB.analytics.provider and page.JB.analytics != false %}
+{% if site.JB.analytics.provider and page.JB.analytics != false %}
 {% case site.JB.analytics.provider %}
 {% when "metrica" %}
   {% include JB/analytics-providers/metrica %}
