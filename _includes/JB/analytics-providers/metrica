@@ -1,4 +1,7 @@
 <!-- Yandex.Metrika informer -->
+<!-- Yandex.Metrika informer -->
+
+
 <a href="http://metrika.yandex.ru/stat/?id={{site.JB.analytics.metrica.id}}&amp;from=informer"
 target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/{{site.JB.analytics.metrica.id}}/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
 style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:16750333,lang:'ru'});return false}catch(e){}"/></a>
@@ -6,7 +9,7 @@ style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" tit
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
-(function (d, w, c) {metrica.id}}
+(function (d, w, c) {
     (w[c] = w[c] || []).push(function() {
         try {
             w.yaCounter16750333 = new Ya.Metrika({id:{{site.JB.analytics.metrica.id}},
