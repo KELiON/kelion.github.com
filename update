@@ -1,2 +1,2 @@
-jekyll --no-auto ./ ./_site/
+jekyll build
 scp -r ./_site/* root@82.196.4.106:/var/www/blog
