@@ -1,4 +1,5 @@
 (function(){
+  var loadedMeta = false;
   var player = new MediaElementPlayer('audio', {
       features: ['current','progress','duration'],
       keyActions: false,
@@ -92,7 +93,7 @@
     };
 
     var draw = function(){
-      if (visualize && dataLoaded && data) {
+      if (loadedMeta && visualize && dataLoaded && data) {
         redraw();
       }
       requestAnimationFrame(draw);
@@ -128,6 +129,12 @@
   }();
 
   player.play();
+
+  player.media.addEventListener('loadedmetadata', function (){
+    loadedMeta = true;
+  });
+
+
   visualizer.load(document.getElementById('player').getAttribute('data-visualization'));
   visualizer.start();
 }());
