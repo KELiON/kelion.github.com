@@ -1,8 +1,8 @@
 html,body {
-  background: #312f32;
   min-height: 100%;
   height: 100%;
-  overflow: hidden
+  overflow: hidden;
+  background: #312f32 url(/assets/visualizer/bg.png) 0 0 repeat;
 }
 
 html,body,input,select {
@@ -15,13 +15,13 @@ html,body,input,select {
   height: 86px;
   position: relative;
   z-index: 1;
-  float: left;
   width: 70%;
   background: #402364;
   border-right: 1px solid #2f1950;
   overflow: hidden;
   -webkit-border-radius: 10px;
-  border-radius: 10px
+  border-radius: 10px;
+  margin: 150px auto;
 }
 
 .b-visualization {
