@@ -6,7 +6,7 @@
     played = !played;
     $(this).toggleClass('b-button__play');
     if (played) {
-      player.play()
+      player.play();
     }
     else {
       player.pause();
@@ -40,6 +40,9 @@
 
 
     var canvas = document.getElementById('visual-wrapper');
+    if (typeof G_vmlCanvasManager != 'undefined') {
+        G_vmlCanvasManager.initElement(canvas);
+    }
     var ctx = canvas.getContext('2d');
 
     var maxCount = 10;
