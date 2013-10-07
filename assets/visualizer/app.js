@@ -1,5 +1,18 @@
 (function(){
   var loadedMeta = false;
+  var played = false;
+
+  $("#play").click(function(){
+    played = !played;
+    $(this).toggleClass('b-button__play');
+    if (played) {
+      player.play()
+    }
+    else {
+      player.pause();
+    }
+  });
+
   var player = new MediaElementPlayer('audio', {
       features: ['current','progress','duration'],
       keyActions: false,
@@ -93,7 +106,7 @@
     };
 
     var draw = function(){
-      if (loadedMeta && visualize && dataLoaded && data) {
+      if (played && loadedMeta && visualize && dataLoaded && data) {
         redraw();
       }
       requestAnimationFrame(draw);
@@ -128,7 +141,9 @@
     };
   }();
 
-  player.play();
+  player.load();
+
+  //player.play();
 
   player.media.addEventListener('loadedmetadata', function (){
     loadedMeta = true;

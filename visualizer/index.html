@@ -7,14 +7,16 @@
 <body>
   <div class="b-play-info">
     <canvas class="b-visualization" id="visual-wrapper" width="155" height="86"></canvas>
+    <span role="link" class="b-button b-button__play" id="play">Play/Pause</span>
     <div class="b-play-info-content">
       <div class="b-title">
         <h1 class="b-truncate">Kryptonite</h1>
         <h2 class="b-truncate">3 Doors Down</h2>
       </div>
       <audio id="player" class="b-seekbar" data-visualization="/assets/visualizer/visualization.json">
-        <source src="/assets/visualizer/kryptonite.ogg" type="audio/ogg">
         <source src="/assets/visualizer/kryptonite.mp3" type="audio/mpeg">
+        <source src="/assets/visualizer/kryptonite.ogg" type="audio/ogg">
+
       </audio>
     </div>
   </div>
