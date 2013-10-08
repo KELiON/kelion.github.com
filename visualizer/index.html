@@ -3,6 +3,10 @@
 <head>
   <link rel="stylesheet" href="/assets/visualizer/styles.css" type="text/css">
   <title>Cross-browser audio visualization demo</title>
+  <!--[if IE]>
+    <script src="/assets/visualizer/excanvas.js"></script>
+    <script type="text/javascript">document.createElement('audio');</script>
+  <![endif]-->
 </head>
 <body>
   <div class="b-play-info">
@@ -21,9 +25,6 @@
     </div>
   </div>
   <script type="text/javascript" src="/assets/visualizer/jquery.min.js"></script>
-  <!--[if IE]>
-    <script src="/assets/visualizer/excanvas.js"></script>
-  <![endif]-->
   <script type="text/javascript" src="/assets/visualizer/mediaelement-and-player.js"></script>
   <script type="text/javascript" src="/assets/visualizer/app.js"></script>
   <!-- Yandex.Metrika counter -->

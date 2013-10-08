@@ -1,6 +1,17 @@
+// shim layer with setTimeout fallback
+window.requestAnimationFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
 (function(){
-  var loadedMeta = false;
-  var played = false;
+  var loadedMeta = false,
+      dataLoaded = false,
+      played = false;
 
   $("#play").click(function(){
     played = !played;
@@ -14,145 +25,110 @@
   });
 
   var player = new MediaElementPlayer('audio', {
-      features: ['current','progress','duration'],
-      keyActions: false,
-      pluginPath: '/assets/visualizer/',
-      webkitFlash: false,
-      audioWidth: '90%'
+    features: ['current','progress','duration'],
+    keyActions: false,
+    pluginPath: '/assets/visualizer/',
+    webkitFlash: true,
+    audioWidth: '90%'
   });
 
   var visualizer = function(){
-    var data = null;
-    var visualize = true;
-    var getData = function(current){
-      var d;
-      var min = 100000;
-      var temp;
-      for (var t in data) {
-        temp = Math.abs(current-parseFloat(t));
-        if (temp < min) {
-          d = data[t];
-          min = temp;
-        }
-      }
-      return d;
-    };
+    var data = null,
+        visualize = true,
+        colors = ['#764995','#602b70'],
+        startTime = new Date().getTime(),
+        canvas = document.getElementById('visual-wrapper');
 
-
-    var canvas = document.getElementById('visual-wrapper');
     if (typeof G_vmlCanvasManager != 'undefined') {
-        G_vmlCanvasManager.initElement(canvas);
+      G_vmlCanvasManager.initElement(canvas);
     }
-    var ctx = canvas.getContext('2d');
 
-    var maxCount = 10;
+    var ctx = canvas.getContext('2d'),
+        maxCount = 10;
 
-    var initCanvas = function(){
-      canvas.width = $(canvas).parent().width();
-      canvas.height = $(canvas).parent().height();
-    };
-    initCanvas();
-
-    var colors = ['#764995','#602b70'];
-
-    var dataLoaded = false;
-
-
-    var onLoadData = function(){
-      dataLoaded = true;
-      startTime = new Date().getTime() - player.getCurrentTime()*1000;
-    };
-
-    var startTime = new Date().getTime();
+    canvas.width = $(canvas).parent().width();
+    canvas.height = $(canvas).parent().height();
 
     setInterval(function(){
       startTime = new Date().getTime() - player.getCurrentTime()*1000;
-    },100);
+    }, 400);
 
-
-    var getTime = function(){
+    function getTime(){
       //in flash getCurrentTime() works slow, make hack for it
-      return (new Date().getTime()-startTime)/1000;
-    };
+      return (new Date().getTime() - startTime)/1000;
+    }
 
-    var width = 20;
-    var margin = 3;
+    function getData(current){
+      return data[Math.round(current / 0.04) * 0.04];
+    }
+
+    var width = 20,
+        margin = 3;
     if (margin+30*(width+margin)+20 < canvas.width) {
       width = (canvas.width-20-margin)/30-margin;
     }
 
-    var redraw = function(){
-      var for_draw = null;
-      if (getTime() > 0) {
-        for_draw = getData(getTime());
-      }
-      if (for_draw) {
-        var i = 0;
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        for (var t in for_draw) {
-          var count = for_draw[t] / maxCount;
-          ctx.fillStyle = colors[0];
-          var y;
-          for (var j=0;j<count;j++) {
-            y = canvas.height - j*7;
-            ctx.fillRect(margin+i*(width+margin), y, width, 5);
+    function draw(){
+      if (played && loadedMeta && visualize && dataLoaded && data) {
+        var time = getTime();
+        if (time > 0) {
+          var bars = getData(time);
+              //i = 0;
+          if (bars) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0, max = bars.length; i < max; i++) {
+              var count = bars[i] / maxCount,
+                  y = null;
+              ctx.fillStyle = colors[0];
+              for (var j=0; j<count; j++) {
+                y = canvas.height - j*7;
+                ctx.fillRect(margin+i*(width+margin), y, width, 5);
+              }
+              if (Math.round(count) > count) {
+                ctx.fillStyle = colors[1];
+                y = canvas.height - j*7;
+                ctx.fillRect(margin+i*(width+margin), y, width, 5);
+              }
+            }
           }
-          if (Math.round(count) > count) {
-            ctx.fillStyle = colors[1];
-            y = canvas.height - j*7;
-            ctx.fillRect(margin+i*(width+margin), y, width, 5);
-          }
-          i++;
         }
       }
-    };
-
-    var draw = function(){
-      if (played && loadedMeta && visualize && dataLoaded && data) {
-        redraw();
-      }
       requestAnimationFrame(draw);
-    };
+    }
 
 
     draw();
     return {
       stop: function(){
         visualize = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       },
       start: function(){
         visualize = true;
         startTime = new Date().getTime() - player.getCurrentTime()*1000;
       },
-      trackLoaded: function(){
-        trackLoaded = true;
-        startTime = new Date().getTime();
-      },
-      clear: function(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-      },
       load: function(url){
         data = false;
-        trackLoaded = false;
-        dataLoaded = false;
-        $.getJSON(url,function(d){
+        $.getJSON(url, function(d){
           data = d;
-          onLoadData();
+          dataLoaded = true;
+          startTime = new Date().getTime() - player.getCurrentTime()*1000;
         });
       }
     };
   }();
 
-  player.load();
+  $(window).load(function(){
+    player.load();
+    player.media.addEventListener('loadedmetadata', function(){
+      loadedMeta = true;
+    });
+    player.media.addEventListener('ended', function(){
+      $("#play").click();
+      visualizer.stop();
+    });
 
-  //player.play();
-
-  player.media.addEventListener('loadedmetadata', function (){
-    loadedMeta = true;
+    visualizer.load(document.getElementById('player').getAttribute('data-visualization'));
+    visualizer.start();
   });
-
-
-  visualizer.load(document.getElementById('player').getAttribute('data-visualization'));
-  visualizer.start();
 }());
