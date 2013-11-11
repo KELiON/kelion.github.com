@@ -193,3 +193,8 @@ body {
 #about-social i {
   width: 25px;
 }
+
+.addthis_toolbox a {
+  border: 0;
+  text-decoration: none;
+}
