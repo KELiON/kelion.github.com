@@ -12,4 +12,4 @@ language: ru
 ![](http://cl.ly/image/2C3y0L1O0O3a/Screen%20Shot%202013-09-30%20at%2019.30.10.png)
 ![](http://cl.ly/image/252N1Z3e3e3U/Screen%20Shot%202013-09-30%20at%2019.35.05.png)
 
-#### [Скачать workflow](http://cl.ly/1H1V3S1g1W0o/download/Google%20Translate%20Auto.alfredworkflow) | [Код на гитхабе](https://github.com/KELiON/alfred-translate)
+#### [Скачать workflow](http://cl.ly/2l1v050P3B2t/download/Google%20Translate%20Auto.alfredworkflow) | [Код на гитхабе](https://github.com/KELiON/alfred-translate)
