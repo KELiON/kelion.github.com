@@ -1,0 +1,3 @@
+[submodule "samarajs"]
+	path = samarajs
+	url = https://github.com/KELiON/samarajs2.0.git
