@@ -33,58 +33,80 @@
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <script>
-  $.ajax({
-    type: "GET",
-    dataType: "jsonp",
-    cache: false,
-    url: 'https://api.instagram.com/v1/users/654551465/media/recent?client_id=8eaed8a782c94b32a1e441cbf85ea294',
-    success: function(resp) {
-      // Массив всех картинок
-      var shots = [];
+  // Массив всех картинок
+  var shots = [];
+  var initialized = false;
 
+  function getPhotos(url) {
+    return $.ajax({
+      type: "GET",
+      dataType: "jsonp",
+      cache: false,
+      url: url
+    });
+  }
+
+  function getShot(current){
+    var index;
+    do {
+      // не повторять шоты
+      index = Math.floor(Math.random() * shots.length);
+    } while (shots[index] == current)
+    return shots[index];
+  }
+
+  function getPart(x, y) {
+    // определяем в какой части курсор
+    return 1000 - x - y > 500 ? 0 : 1;
+  }
+
+  function init(){
+    var imgs = $('.js-shot');
+
+    imgs.each(function(i, el){
+      $(this).attr('src', getShot());
+
+      var part;
+
+      $(el).on('mouseout', function(){
+        part = null;
+      });
+
+      // нельзя сделать mouseout/mouseover
+      // т.к. даже с clip-path верхний элемент является квадратом
+      $(el).on('mousemove', function(event) {
+        var newPart = getPart(event.offsetX, event.offsetY);
+        if (part != newPart) {
+          part = newPart;
+          img = $("#shot"+part);
+          img.attr('src', getShot(img.src));
+        }
+      });
+    });
+  }
+
+  $(function(){
+    var load = function(url, callback){
+      getPhotos(url).then(function(resp){
+        callback(resp);
+        if (resp.next_url) {
+
+        }
+        if (resp.pagination.next_url) {
+          load(resp.pagination.next_url, callback)
+        }
+      })
+    }
+
+    load('https://api.instagram.com/v1/users/654551465/media/recent?client_id=8eaed8a782c94b32a1e441cbf85ea294&count=33', function(resp){
       for (var i = 0; i < resp.data.length; i++) {
         shots.push(resp.data[i].images.standard_resolution.url);
       }
-
-      var imgs = document.querySelectorAll('.js-shot');
-
-      function getShot(current){
-        var index;
-        do {
-          // не повторять шоты
-          index = Math.floor(Math.random() * shots.length);
-        } while (shots[index] == current)
-        return shots[index];
+      if (!initialized) {
+        init();
+        initialized = true;
       }
-
-      function getPart(x, y) {
-        // определяем в какой части курсор
-        return 1000 - x - y > 500 ? 0 : 1;
-      }
-
-
-
-      [].forEach.call(imgs, function (el) {
-        el.src = getShot();
-
-        var part;
-
-        el.addEventListener('mouseout', function(){
-          part = null;
-        });
-
-        // нельзя сделать mouseout/mouseover
-        // т.к. даже с clip-path верхний элемент является квадратом
-        el.addEventListener('mousemove', function(event) {
-          var newPart = getPart(event.offsetX, event.offsetY);
-          if (part != newPart) {
-            part = newPart;
-            img = document.getElementById("shot"+part)
-            img.src = getShot(img.src);
-          }
-        });
-      })
-    }
+    });
   });
 </script>
 </body>
