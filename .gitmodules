@@ -3,4 +3,4 @@
 	url = https://github.com/KELiON/samarajs2.0.git
 [submodule "barcelona-js-electron"]
 	path = barcelona-js-electron
-	url = git@github.com:KELiON/barcelona-js-electron.git
+	url = https://github.com/KELiON/barcelona-js-electron.git
