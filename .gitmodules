@@ -4,3 +4,6 @@
 [submodule "barcelona-js-electron"]
 	path = barcelona-js-electron
 	url = https://github.com/KELiON/barcelona-js-electron.git
+[submodule "jedi-toolset"]
+	path = jedi-toolset
+	url = git@github.com:KELiON/jedi-toolset.git
