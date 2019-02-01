@@ -7,3 +7,6 @@
 [submodule "jedi-toolset"]
 	path = jedi-toolset
 	url = https://github.com/KELiON/jedi-toolset.git
+[submodule "dev-team-automation"]
+	path = dev-team-automation
+	url = git@github.com:KELiON/dev-team-automation.git
